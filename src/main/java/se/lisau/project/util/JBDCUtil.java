@@ -1,4 +1,4 @@
-package project;
+package se.lisau.project.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,12 +15,12 @@ public class JBDCUtil {
     // antingen för databasen eller h2-databasen
     static {
         // läser in från a.p-filen via InputStream
-        try(InputStream input = se.lisau.project.JDBCUtil.class.getClassLoader().getResourceAsStream("application.properties")){
-            if(input != null){
+        try(InputStream input = JBDCUtil.class.getClassLoader().getResourceAsStream("application.properties")) {
+            if(input == null){
                 throw new IOException("Could not find 'application.properties' file");
             }
             properties.load(input);
-            System.out.println("Input från filen fungerar");
+            //System.out.println("Input från filen fungerar");
         } catch (IOException e){
             e.printStackTrace();
             throw new ExceptionInInitializerError("Failed to load database properties");
@@ -33,8 +33,8 @@ public class JBDCUtil {
         Driver hsqlDriver = new org.hsqldb.jdbcDriver();
         DriverManager.registerDriver(hsqlDriver);
 
-        String dbUrl = properties.getProperty("db.url");
-        String dbUser = properties.getProperty("db.user");
+        String dbUrl = properties.getProperty("db.Url");
+        String dbUser = properties.getProperty("db.userId");
         String dbPassword = properties.getProperty("db.password");
 
         Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
