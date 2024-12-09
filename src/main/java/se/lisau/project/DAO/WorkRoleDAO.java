@@ -1,6 +1,6 @@
 package se.lisau.project.DAO;
 
-import se.lisau.project.WorkRole;
+import se.lisau.project.model.WorkRole;
 
 import java.sql.SQLException;
 import java.util.List;

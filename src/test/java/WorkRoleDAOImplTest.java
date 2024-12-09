@@ -2,7 +2,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import se.lisau.project.DAO.WorkRoleDAO;
 import se.lisau.project.DAO.WorkRoleDAOImpl;
-import se.lisau.project.WorkRole;
+import se.lisau.project.model.WorkRole;
+import se.lisau.project.service.WorkRoleService;
 import se.lisau.project.util.JBDCUtil;
 
 import java.sql.Connection;
@@ -20,7 +21,7 @@ public class WorkRoleDAOImplTest {
     public void tearDown() {
         Connection conn = null;
         Statement stmt = null;
-        try{
+        try {
             conn = JBDCUtil.getConnection();
             stmt = conn.createStatement();
             // statement = ta bort tabellen
@@ -28,51 +29,55 @@ public class WorkRoleDAOImplTest {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             JBDCUtil.closeStatement(stmt);
             JBDCUtil.closeConnection(conn);
         }
     }
+
     // varför behövs denna?
     // kolla test-lektion
     @Test
-    void testGetConnection(){
-        try{
+    void testGetConnection() {
+        try {
             JBDCUtil.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Test
     void testInsertWorkRole() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
-        WorkRole workrole = new WorkRole("CEO","Cheif Executive Officer",150000, Date.valueOf("2024-12-05"));
-        try{
-            dao.insertWorkRole(workrole);
-            List<WorkRole> workRoleList = dao.getWorkRoles();
-            for(WorkRole workRole : workRoleList){
+        WorkRoleService workRoleService = new WorkRoleService(dao);
+        WorkRole workrole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
+        try {
+            workRoleService.insertWorkRole(workrole);
+            List<WorkRole> workRoleList = workRoleService.getAllWorkRoles(0);
+            for (WorkRole workRole : workRoleList) {
                 System.out.println(workRole.getTitle());
                 assertEquals(1, workRoleList.size());
             }
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Test
-    void getWorkRole(){
+    void getWorkRole() {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
-        WorkRole workrole = new WorkRole("CEO","Cheif Executive Officer", 150000, Date.valueOf("2024-12-05") );
+        WorkRole workrole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
 
     }
+
     @Test
     void getWorkRoles() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
-        WorkRole workRole = new WorkRole("CEO","Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
+        WorkRole workRole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
         dao.insertWorkRole(workRole);
         List<WorkRole> workRoles = dao.getWorkRoles();
-        for(WorkRole workrole : workRoles){
+        for (WorkRole workrole : workRoles) {
             System.out.println(workrole.getTitle());
         }
         // kontrollerar att listan inte är null
@@ -80,11 +85,13 @@ public class WorkRoleDAOImplTest {
 
 
     }
+
     @Test
     void updateWorkRole() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
 
     }
+
     @Test
     void testUpdateWorkRole() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();

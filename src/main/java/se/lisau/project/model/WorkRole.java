@@ -1,4 +1,4 @@
-package se.lisau.project;
+package se.lisau.project.model;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -31,33 +31,43 @@ public class WorkRole {
     public int getRole_id() {
         return role_id;
     }
+
     public void setRole_id(int role_id) {
         this.role_id = role_id;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public double getSalary() {
         return salary;
     }
+
     public void setSalary(double salary) {
         this.salary = salary;
     }
+
     public Date getCreation_date() {
         return creation_date;
     }
+
     public void setCreation_date(Date creation_date) {
         this.creation_date = creation_date;
     }
+
     // toString
     @Override
     public String toString() {

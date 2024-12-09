@@ -15,13 +15,13 @@ public class JBDCUtil {
     // antingen för databasen eller h2-databasen
     static {
         // läser in från a.p-filen via InputStream
-        try(InputStream input = JBDCUtil.class.getClassLoader().getResourceAsStream("application.properties")) {
-            if(input == null){
+        try (InputStream input = JBDCUtil.class.getClassLoader().getResourceAsStream("application.properties")) {
+            if (input == null) {
                 throw new IOException("Could not find 'application.properties' file");
             }
             properties.load(input);
             //System.out.println("Input från filen fungerar");
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError("Failed to load database properties");
         }
@@ -47,9 +47,9 @@ public class JBDCUtil {
 
     // stänger aktiv databasanslutning
     public static void closeConnection(Connection conn) {
-        try{
+        try {
             // om conn inte är null, stäng av
-            if(conn != null){
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
@@ -59,9 +59,9 @@ public class JBDCUtil {
 
     // stänger aktivt Statement-objekt
     public static void closeStatement(Statement stmt) {
-        try{
+        try {
             // om stmt inte är null
-            if(stmt != null){
+            if (stmt != null) {
                 stmt.close();
             }
         } catch (SQLException e) {
@@ -71,9 +71,9 @@ public class JBDCUtil {
 
     // stänger aktivt ResultSet-objekt
     public static void closeResultSet(ResultSet rs) {
-        try{
+        try {
             // om rs inte är null
-            if(rs != null){
+            if (rs != null) {
                 rs.close();
             }
         } catch (SQLException e) {
@@ -83,19 +83,20 @@ public class JBDCUtil {
 
     // bekräftar och sparar ändringar i db
     // behövs pga autoCommit = av
-    public static void commit(Connection conn){
-        try{
-            if(conn != null){
+    public static void commit(Connection conn) {
+        try {
+            if (conn != null) {
                 conn.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     // ångrar ändringar i db om något går fel
-    public static void rollback(Connection conn){
-        try{
-            if(conn != null){
+    public static void rollback(Connection conn) {
+        try {
+            if (conn != null) {
                 conn.rollback();
             }
         } catch (SQLException e) {
@@ -104,21 +105,13 @@ public class JBDCUtil {
     }
 
     // metod för att 'pinga' databasen
-    public static String getDatabaseProductName(Connection conn){
-        try{
+    public static String getDatabaseProductName(Connection conn) {
+        try {
             DatabaseMetaData metadata = conn.getMetaData();
             return metadata.getDatabaseProductName();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             return null;
-        }
-    }
-    public static void main(String[] args) {
-        try(Connection conn = getConnection()){
-            String dbName = getDatabaseProductName(conn);
-            System.out.println("Database: " + dbName);
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
         }
     }
 
