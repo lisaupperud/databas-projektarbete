@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// hanterar databas-logiken mot work_role tabellen
+// hanterar direkt kommunikation med databasen
 public class WorkRoleDAOImpl implements WorkRoleDAO {
     @Override
     public void insertWorkRole(WorkRole workRole) throws SQLException {
@@ -99,7 +99,6 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
         return workRoles;
     }
 
-    // måste ha en felhantering för InputMismatchException
     @Override
     public WorkRole getWorkRole(int role_id) throws SQLException {
         Connection conn = null;
@@ -113,13 +112,13 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
             String sql = "SELECT * FROM work_role WHERE role_id = ?";
             // skickar in frågan till databasen
             ps = conn.prepareStatement(sql);
-            // sätter parametern i frågan till 1
+            // sätter parametern i sql-frågan
             ps.setInt(1, role_id);
             // sparar resultatet i ett ResultSet
             rs = ps.executeQuery();
-            //
+            // om role_id matchar en rad i tabellen
             if (rs.next()) {
-                //
+                // skapa en ny WorkRole instans
                 workRole = new WorkRole(
                         rs.getInt("role_id"),
                         rs.getString("title"),
@@ -139,7 +138,7 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
             JBDCUtil.closeStatement(ps);
             JBDCUtil.closeConnection(conn);
         }
-        // returnerar ett WorkRole-objekt
+        // returnerar WorkRole instansen från if-satsen
         return workRole;
     }
 
@@ -168,7 +167,6 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
             int rowsUpdated = ps.executeUpdate();
             // commit ändringen
             JBDCUtil.commit(conn);
-            System.out.println("Work role updated: " + workRole);
             System.out.println("Rows updated: " + rowsUpdated);
         } catch (SQLException e) {
             JBDCUtil.rollback(conn);
@@ -194,7 +192,9 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
             ps = conn.prepareStatement(sql);
             // säger att ? i sql queryn = 1, hämta rollens id
             ps.setInt(1, workRole.getRole_id());
+            // utför uppdateringen
             int rowsUpdated = ps.executeUpdate();
+            // commit ändringen
             JBDCUtil.commit(conn);
             System.out.println("Work role deleted: " + workRole);
             System.out.println("Rows updated: " + rowsUpdated);

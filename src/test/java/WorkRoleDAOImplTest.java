@@ -65,13 +65,6 @@ public class WorkRoleDAOImplTest {
     }
 
     @Test
-    void getWorkRole() {
-        WorkRoleDAO dao = new WorkRoleDAOImpl();
-        WorkRole workrole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
-
-    }
-
-    @Test
     void getWorkRoles() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
         WorkRole workRole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
@@ -83,18 +76,6 @@ public class WorkRoleDAOImplTest {
         // kontrollerar att listan inte är null
         assertNotNull(workRoles);
 
-
-    }
-
-    @Test
-    void updateWorkRole() throws SQLException {
-        WorkRoleDAO dao = new WorkRoleDAOImpl();
-
-    }
-
-    @Test
-    void testUpdateWorkRole() throws SQLException {
-        WorkRoleDAO dao = new WorkRoleDAOImpl();
 
     }
 

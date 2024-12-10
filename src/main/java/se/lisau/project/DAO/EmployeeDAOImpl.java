@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// hanterar databas-logiken för Employee
+// hanterar direkta kontakten med databasen för Employee
 public class EmployeeDAOImpl implements EmployeeDAO {
 
     public Employee leftJoin(String email, String password) throws SQLException {

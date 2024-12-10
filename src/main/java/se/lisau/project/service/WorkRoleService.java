@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// ansvarar för hantering av affärslogik
+// ansvarar för hantering av affärslogik och validering
 public class WorkRoleService {
     // interface-typ för DAO-lagret
     private final WorkRoleDAO workRoleDAO;
@@ -20,17 +20,18 @@ public class WorkRoleService {
     }
 
     // validerar data innan den läggs till i databasen
-    public void insertWorkRole(WorkRole workRole) throws SQLException, IllegalArgumentException{
+    // kontrollerar att angivna värden inte är null eller 0
+    public void insertWorkRole(WorkRole workRole) throws SQLException, IllegalArgumentException {
         if (workRole.getTitle() == null || workRole.getTitle().isEmpty()) {
             throw new SQLException("Title can't be null or empty");
         }
-        if(workRole.getDescription() == null || workRole.getDescription().isEmpty()) {
+        if (workRole.getDescription() == null || workRole.getDescription().isEmpty()) {
             throw new SQLException("Description can't be null or empty");
         }
-        if(workRole.getSalary() < 0){
+        if (workRole.getSalary() < 0) {
             throw new IllegalArgumentException("Salary must be greater than 0");
         }
-        if(workRole.getCreation_date() == null){
+        if (workRole.getCreation_date() == null) {
             throw new IllegalArgumentException("Creation date can't be null");
         }
         workRoleDAO.insertWorkRole(workRole);
@@ -39,8 +40,8 @@ public class WorkRoleService {
     public List<WorkRole> getAllWorkRoles(double salaryThreshold) throws SQLException {
         List<WorkRole> allWorkRoles = workRoleDAO.getWorkRoles();
         List<WorkRole> filteredWorkRoles = new ArrayList<>();
-        for(WorkRole workRole : allWorkRoles){
-            if(workRole.getSalary() > salaryThreshold){
+        for (WorkRole workRole : allWorkRoles) {
+            if (workRole.getSalary() > salaryThreshold) {
                 filteredWorkRoles.add(workRole);
             }
         }
@@ -48,8 +49,8 @@ public class WorkRoleService {
     }
 
     // hanterar eventuella undantag
-    public WorkRole getWorkRoleById(int id){
-        try{
+    public WorkRole getWorkRoleById(int id) {
+        try {
             return workRoleDAO.getWorkRole(id);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -58,10 +59,10 @@ public class WorkRoleService {
 
     }
 
-    public boolean deleteWorkRoleById(int id){
-        try{
+    public boolean deleteWorkRoleById(int id) {
+        try {
             WorkRole workRole = getWorkRoleById(id);
-            if(workRole != null){
+            if (workRole != null) {
                 workRoleDAO.deleteWorkRole(workRole);
                 return true;
             } else {

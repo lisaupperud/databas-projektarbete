@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 public class WorkRole {
+    // attribut som matchar kolumnerna i tabellen work_role
     private int role_id;
     private String title;
     private String description;

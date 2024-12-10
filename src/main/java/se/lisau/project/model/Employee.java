@@ -3,11 +3,12 @@ package se.lisau.project.model;
 import java.util.Objects;
 
 public class Employee {
-    private int employee_id;
-    private String name;
-    private String email;
-    private String password;
-    private WorkRole work_role;
+    // attribut som matchar kolumnerna i tabellen employee
+    private final int employee_id;
+    private final String name;
+    private final String email;
+    private final String password;
+    private final WorkRole work_role;
 
     // för att hämta information från db
     public Employee(int employee_id, String name, String email, String password, WorkRole work_role) {
@@ -18,54 +19,14 @@ public class Employee {
         this.work_role = work_role;
     }
 
-    // för att skapa instanser
-    public Employee(String name, String email, String password, WorkRole work_role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.work_role = work_role;
-    }
+    // ingen konstruktor för att skapa instanser då detta inte behövs
 
-    // get och set
-    public int getEmployee_id() {
-        return employee_id;
-    }
 
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    // endast en getter för work_role då det är det enda attributet som måste hämtas
     public WorkRole getWork_role() {
         return work_role;
     }
 
-    public void setWork_role(WorkRole work_role) {
-        this.work_role = work_role;
-    }
 
     @Override
     public String toString() {
