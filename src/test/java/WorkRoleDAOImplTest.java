@@ -25,7 +25,7 @@ public class WorkRoleDAOImplTest {
             conn = JBDCUtil.getConnection();
             stmt = conn.createStatement();
             // statement = ta bort tabellen
-            stmt.execute("DROP TABLE IF EXISTS workrole");
+            stmt.execute("DROP TABLE IF EXISTS work_role");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -35,22 +35,12 @@ public class WorkRoleDAOImplTest {
         }
     }
 
-    // varför behövs denna?
-    // kolla test-lektion
-    @Test
-    void testGetConnection() {
-        try {
-            JBDCUtil.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Test
-    void testInsertWorkRole() throws SQLException {
+    void testInsertWorkRole(){
         WorkRoleDAO dao = new WorkRoleDAOImpl();
         WorkRoleService workRoleService = new WorkRoleService(dao);
-        WorkRole workrole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
+        WorkRole workrole = new WorkRole("CEO", "Chief Executive Officer", 150000, Date.valueOf("2024-12-05"));
         try {
             workRoleService.insertWorkRole(workrole);
             List<WorkRole> workRoleList = workRoleService.getAllWorkRoles(0);
@@ -67,7 +57,7 @@ public class WorkRoleDAOImplTest {
     @Test
     void getWorkRoles() throws SQLException {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
-        WorkRole workRole = new WorkRole("CEO", "Cheif Executive Officer", 150000, Date.valueOf("2024-12-05"));
+        WorkRole workRole = new WorkRole("CEO", "Chief Executive Officer", 150000, Date.valueOf("2024-12-05"));
         dao.insertWorkRole(workRole);
         List<WorkRole> workRoles = dao.getWorkRoles();
         for (WorkRole workrole : workRoles) {
@@ -75,8 +65,6 @@ public class WorkRoleDAOImplTest {
         }
         // kontrollerar att listan inte är null
         assertNotNull(workRoles);
-
-
     }
 
 }

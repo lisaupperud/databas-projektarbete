@@ -12,6 +12,7 @@ import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.List;
 
+
 // användargränssnitt
 // hanterar kommunikationen med användaren
 public class EmployeeUI {
@@ -125,20 +126,26 @@ public class EmployeeUI {
 
     private void deleteWorkRole() {
         System.out.println("Enter work role id: ");
-        try {
-            int workRoleId = ScannerUtil.readInt();
-            // clear scanner
-            ScannerUtil.getUserInput();
-            boolean deleted = workRoleService.deleteWorkRoleById(workRoleId);
-            if (deleted) {
-                System.out.println("Work role " + workRoleId + " deleted successfully");
-            } else {
-                System.out.println("No work role with ID " + workRoleId + " found");
+        while (true) {
+            try {
+                int workRoleId = ScannerUtil.readInt();
+                // clear scanner
+                ScannerUtil.getUserInput();
+                boolean deleted = workRoleService.deleteWorkRoleById(workRoleId);
+                // om deleted = true
+                if (deleted) {
+                    System.out.println("Work role " + workRoleId + " deleted successfully");
+                    break;
+                } else {
+                    System.out.println("No work role with ID " + workRoleId + " found");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an valid ID-number");
+                ScannerUtil.getUserInput(); // clear scanner
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Enter an valid ID-number");
-            ScannerUtil.getUserInput(); // clear scanner
+
         }
+
 
     }
 
@@ -151,7 +158,7 @@ public class EmployeeUI {
             System.out.println("No work role with ID " + workRoleId + " found");
             return;
         }
-        // varför
+        // säkerställer att role_id inte ändras
         workRole.setRole_id(workRole.getRole_id());
 
         System.out.println("If you want to keep the current attribute, leave blank by pressing enter.");
@@ -159,69 +166,44 @@ public class EmployeeUI {
         // ändra titel
         System.out.println("Enter new title: (current: " + workRole.getTitle() + ")");
         String newTitle = ScannerUtil.getUserInput();
-        // om newTitle inte är tom så sätt den till newTitle
-        if (!newTitle.isEmpty()) {
-            workRole.setTitle(newTitle);
-            // uppdatera
-            workRoleDAO.updateWorkRole(workRole);
-            System.out.println("New title set: " + workRole.getTitle());
-
-        }
+        workRoleService.updateTitleInWorkRole(workRole, newTitle);
 
         // ändra beskrivning
         System.out.println("Enter new description: (current: " + workRole.getDescription() + ")");
         String newDescription = ScannerUtil.getUserInput();
-        // om strängen inte är tom
-        if (!newDescription.isEmpty()) {
-            // sätt ny beskrivning och uppdatera
-            workRole.setDescription(newDescription);
-            workRoleDAO.updateWorkRole(workRole);
-            System.out.println("New description set: " + workRole.getDescription());
-        }
+        workRoleService.updateDescriptionInWorkRole(workRole, newDescription);
 
         // ändra inkomst
-        System.out.println("Enter new salary (sek): (current: " + workRole.getSalary() + ")");
-        String newSalary = ScannerUtil.getUserInput();
-        if (!newSalary.isBlank()) {
-            try {
-                double newSalaryDouble = Double.parseDouble(newSalary);
-                workRole.setSalary(newSalaryDouble);
-                System.out.println("New salary set: " + workRole.getSalary());
-                workRoleDAO.updateWorkRole(workRole);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid salary format. Enter valid salary: 00.00");
-                return;
-            }
-        }
-        // ändra kreationsdatum
         while (true) {
-            System.out.println("Enter new creation date (current: " + workRole.getCreation_date() + ")");
-            try {
-                String newCreationDate = ScannerUtil.getUserInput();
-                // om input inte är blank
-                if (!newCreationDate.isBlank()) {
-                    // om nya datumet matchar yyyy-MM-dd
-                    if (newCreationDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                        // instans av Date för att spara nya datumet
-                        Date date = Date.valueOf(newCreationDate);
-                        // sätt nya datumet
-                        workRole.setCreation_date(date);
-                        // uppdatera rollen
-                        workRoleDAO.updateWorkRole(workRole);
-                        System.out.println("New creation date set: " + workRole.getCreation_date());
-                        break;
-                    } else {
-                        throw new IllegalArgumentException("Invalid creation date");
-                    }
-                } else { // om man behåller nuvarande datum
-                    // gå ur loopen
-                    break;
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid format. Use yyyy-MM-dd");
-                // fortsätt loopen tills användaren anger rätt format
+            System.out.println("Enter new salary (sek): (current: " + workRole.getSalary() + ")");
+            String newSalary = ScannerUtil.getUserInput();
+            if (!newSalary.isBlank()) {
+                workRoleService.updateSalaryInWorkRole(workRole, newSalary);
+                break;
+            } else if (newSalary.isBlank()) {
+                System.out.println("No changes to Salary made");
+                break;
+            } else {
+                System.out.println("Invalid format. Use 00.00");
             }
         }
+
+
+        // ändra kreationsdatum
+        while (true) { // hanterar möjliga inmatningsfel med en while-loop
+            System.out.println("Enter new creation date: (current: " + workRole.getCreation_date() + ")");
+            String newCreationDate = ScannerUtil.getUserInput();
+            if (!newCreationDate.isBlank() && newCreationDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                workRoleService.updateCreationDateInWorkRole(workRole, newCreationDate);
+                break;
+            } else if (newCreationDate.isBlank()) {
+                System.out.println("No changes to Creation Date made");
+                break;
+            } else {
+                System.out.println("Invalid date format. Use yyyy-MM-dd");
+            }
+        }
+
         System.out.println("Successfully updated the work role: " + workRole);
     }
 
@@ -247,5 +229,7 @@ public class EmployeeUI {
         }
 
     }
+
+
 }
 

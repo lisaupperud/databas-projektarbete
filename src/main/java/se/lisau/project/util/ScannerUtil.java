@@ -25,6 +25,7 @@ public class ScannerUtil {
         return sc.nextInt();
     }
 
+
     // stänger scanner
     public static void closeScanner() {
         sc.close();

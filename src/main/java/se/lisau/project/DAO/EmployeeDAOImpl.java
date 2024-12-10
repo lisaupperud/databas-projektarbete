@@ -20,8 +20,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
         try {
             conn = JBDCUtil.getConnection();
-            // varför behövs denna? programmet funkar ju utan?
-            //int employeeId = 1;
+
 
             // sql query med LEFT JOIN
             String sql = """
@@ -41,7 +40,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             // utför frågan
             rs = ps.executeQuery();
             if (rs.next()) {
-                // WorkRole instans
+                // skapar upp en WorkRole instans
+                // som läggs in i employee
                 WorkRole workRole = new WorkRole(
                         rs.getInt("role_id"),
                         rs.getString("role_title"),
@@ -49,7 +49,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                         rs.getDouble("role_salary"),
                         rs.getDate("role_creation_date")
                 );
-                // employee instans
+                // skapar upp en employee instans
                 employee = new Employee(
                         rs.getInt("employee_id"),
                         rs.getString("employee_name"),

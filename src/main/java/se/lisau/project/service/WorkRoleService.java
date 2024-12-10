@@ -4,6 +4,7 @@ package se.lisau.project.service;
 import se.lisau.project.DAO.WorkRoleDAO;
 import se.lisau.project.model.WorkRole;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,48 @@ public class WorkRoleService {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
+    }
+
+    public void updateTitleInWorkRole(WorkRole workRole, String newTitle) throws SQLException {
+        if (!newTitle.isEmpty()) {
+            workRole.setTitle(newTitle);
+            workRoleDAO.updateWorkRole(workRole);
+            System.out.println("New Title: " + newTitle);
+        } else {
+            System.out.println("No changes to Title made");
+        }
+    }
+
+    public void updateDescriptionInWorkRole(WorkRole workRole, String newDescription) throws SQLException {
+        if (!newDescription.isEmpty()) {
+            workRole.setDescription(newDescription);
+            workRoleDAO.updateWorkRole(workRole);
+            System.out.println("New Description: " + newDescription);
+        } else {
+            System.out.println("No changes to Description made");
+        }
+    }
+
+    public void updateSalaryInWorkRole(WorkRole workRole, String newSalary) throws SQLException {
+        if (!newSalary.isBlank()) {
+            try {
+                workRole.setSalary(Double.parseDouble(newSalary));
+                workRoleDAO.updateWorkRole(workRole);
+                System.out.println("New Salary: " + newSalary);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid format. Try 00.00");
+            }
+        } else {
+            System.out.println("No changes to Salary made");
+        }
+    }
+
+    public void updateCreationDateInWorkRole(WorkRole workRole, String newCreationDate) throws SQLException {
+        Date date = Date.valueOf(newCreationDate);
+        workRole.setCreation_date(date);
+        workRoleDAO.updateWorkRole(workRole);
+        System.out.println("New Creation Date: " + newCreationDate);
+
     }
 
 
