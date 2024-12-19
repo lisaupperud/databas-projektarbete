@@ -10,10 +10,10 @@ public interface WorkRoleDAO {
     void insertWorkRole(WorkRole workRole) throws SQLException;
 
     // hämta alla arbetsroller
-    List<WorkRole> getWorkRoles() throws SQLException;
+    List<WorkRole> fetchAllWorkRoles() throws SQLException;
 
     // hämta en arbetsroll
-    WorkRole getWorkRole(int id) throws SQLException;
+    WorkRole fetchWorkRole(int id) throws SQLException;
 
     // uppdatera arbetsroll
     void updateWorkRole(WorkRole workRole) throws SQLException;

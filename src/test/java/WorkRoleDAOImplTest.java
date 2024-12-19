@@ -42,8 +42,8 @@ public class WorkRoleDAOImplTest {
         WorkRoleService workRoleService = new WorkRoleService(dao);
         WorkRole workrole = new WorkRole("CEO", "Chief Executive Officer", 150000, Date.valueOf("2024-12-05"));
         try {
-            workRoleService.insertWorkRole(workrole);
-            List<WorkRole> workRoleList = workRoleService.getAllWorkRoles(0);
+            workRoleService.addNewWorkRole(workrole);
+            List<WorkRole> workRoleList = workRoleService.filterWorkRolesBySalary(0);
             for (WorkRole workRole : workRoleList) {
                 System.out.println(workRole.getTitle());
                 assertEquals(1, workRoleList.size());
@@ -59,7 +59,7 @@ public class WorkRoleDAOImplTest {
         WorkRoleDAO dao = new WorkRoleDAOImpl();
         WorkRole workRole = new WorkRole("CEO", "Chief Executive Officer", 150000, Date.valueOf("2024-12-05"));
         dao.insertWorkRole(workRole);
-        List<WorkRole> workRoles = dao.getWorkRoles();
+        List<WorkRole> workRoles = dao.fetchAllWorkRoles();
         for (WorkRole workrole : workRoles) {
             System.out.println(workrole.getTitle());
         }

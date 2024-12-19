@@ -56,7 +56,7 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
     }
 
     @Override
-    public List<WorkRole> getWorkRoles() throws SQLException {
+    public List<WorkRole> fetchAllWorkRoles() throws SQLException {
         // lista för att samla alla work roles
         List<WorkRole> workRoles = new ArrayList<>();
         Connection conn = null;
@@ -100,7 +100,7 @@ public class WorkRoleDAOImpl implements WorkRoleDAO {
     }
 
     @Override
-    public WorkRole getWorkRole(int role_id) throws SQLException {
+    public WorkRole fetchWorkRole(int role_id) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

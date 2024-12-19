@@ -22,7 +22,7 @@ public class WorkRoleService {
 
     // validerar data innan den läggs till i databasen
     // kontrollerar att angivna värden inte är null eller 0
-    public void insertWorkRole(WorkRole workRole) throws SQLException, IllegalArgumentException {
+    public void addNewWorkRole(WorkRole workRole) throws SQLException, IllegalArgumentException {
         if (workRole.getTitle() == null || workRole.getTitle().isEmpty()) {
             throw new SQLException("Title can't be null or empty");
         }
@@ -38,8 +38,9 @@ public class WorkRoleService {
         workRoleDAO.insertWorkRole(workRole);
     }
 
-    public List<WorkRole> getAllWorkRoles(double salaryThreshold) throws SQLException {
-        List<WorkRole> allWorkRoles = workRoleDAO.getWorkRoles();
+    // filtrerar listan utifrån salary
+    public List<WorkRole> filterWorkRolesBySalary(double salaryThreshold) throws SQLException {
+        List<WorkRole> allWorkRoles = workRoleDAO.fetchAllWorkRoles();
         List<WorkRole> filteredWorkRoles = new ArrayList<>();
         for (WorkRole workRole : allWorkRoles) {
             if (workRole.getSalary() > salaryThreshold) {
@@ -52,7 +53,7 @@ public class WorkRoleService {
     // hanterar eventuella undantag
     public WorkRole getWorkRoleById(int id) {
         try {
-            return workRoleDAO.getWorkRole(id);
+            return workRoleDAO.fetchWorkRole(id);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
             return null;
@@ -60,7 +61,8 @@ public class WorkRoleService {
 
     }
 
-    public boolean deleteWorkRoleById(int id) {
+    // kontrollerar att id finns för workrole med en boolean
+    public boolean removeWorkRoleById(int id) {
         try {
             WorkRole workRole = getWorkRoleById(id);
             if (workRole != null) {
@@ -75,6 +77,7 @@ public class WorkRoleService {
         }
     }
 
+    // uppdatera attributen
     public void updateTitleInWorkRole(WorkRole workRole, String newTitle) throws SQLException {
         if (!newTitle.isEmpty()) {
             workRole.setTitle(newTitle);
